@@ -84,36 +84,31 @@ function updateColorDisplay() {
     document.getElementById('color-hex').value = brushColor;
 }
 
-function getCoordinates(e) {
+function getCanvasCoords(e) {
     const rect = canvas.getBoundingClientRect();
     
-    // Get client coordinates regardless of touch or mouse
+    // Support both Mouse and Touch
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-    // Calculate the scale between the internal canvas size and the display size
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-
-    // Return the actual canvas coordinates
+    // This math maps your mouse position (pixels on screen) 
+    // to the canvas's internal 400x400 grid
     return {
-        x: (clientX - rect.left) * scaleX,
-        y: (clientY - rect.top) * scaleY
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
     };
 }
-
 function startDrawing(e) {
     isDrawing = true;
-    const coords = getCoordinates(e);
+    const coords = getCanvasCoords(e);
     lastX = coords.x;
     lastY = coords.y;
 }
-
 function draw(e) {
     if (!isDrawing) return;
-    e.preventDefault();
+    if (e.type === 'touchmove') e.preventDefault(); // Stop screen scrolling while drawing
     
-    const coords = getCoordinates(e);
+    const coords = getCanvasCoords(e);
     
     ctx.strokeStyle = brushColor;
     ctx.lineWidth = brushSize;
@@ -168,22 +163,23 @@ function preprocessCanvas() {
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
     
-    // Draw resized image (keeps the colors)
+    // Draw current canvas onto the tiny 28x28 grid
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
-    const imageData = tempCtx.getImageData(0, 0, 28, 28);
-    const pixels = [];
+    const imgData = tempCtx.getImageData(0, 0, 28, 28);
+    const pixels = new Float32Array(28 * 28);
     
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const r = imageData.data[i];
-        const g = imageData.data[i + 1];
-        const b = imageData.data[i + 2];
+    // Background is #FAF7F0 (approx 250, 247, 240)
+    for (let i = 0; i < imgData.data.length; i += 4) {
+        const r = imgData.data[i];
+        const g = imgData.data[i+1];
+        const b = imgData.data[i+2];
+
+        // If the color is DIFFERENT from the background, it's part of the drawing
+        // Use a sensitivity threshold (30) to ignore the background
+        const isNotBackground = (Math.abs(r - 250) > 30 || Math.abs(g - 247) > 30 || Math.abs(b - 240) > 30);
         
-        // Convert to grayscale for AI (standard luminance formula)
-        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-        
-        // Invert and normalize
-        const normalized = (255 - gray) / 255;
-        pixels.push(normalized);
+        // 1.0 = Ink, 0.0 = Blank Space
+        pixels[i / 4] = isNotBackground ? 1.0 : 0.0;
     }
     
     return pixels;
