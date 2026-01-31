@@ -1,0 +1,296 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(to bottom right, #B8C5B0, #A8B8A0);
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.btn-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #8B7355;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.btn-toggle:hover {
+    transform: scale(1.05);
+}
+
+.btn-help {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    font-size: 1.5rem;
+    color: #8B7355;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+
+.btn-help:hover {
+    background: white;
+}
+
+/* Page Layout */
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+}
+
+.page.hidden {
+    display: none;
+}
+
+.title {
+    text-align: center;
+    font-size: 3rem;
+    color: #5D6D5A;
+    margin-bottom: 2rem;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #6B7D68;
+    margin-bottom: 2rem;
+}
+
+/* Drawing Page */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.canvas-card {
+    background: #FAF7F0;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#drawing-canvas {
+    max-width: 100%; 
+    height: auto; 
+    aspect-ratio: 1 / 1; /* Keeps it square */
+    border: 3px solid #D4C5B9;
+    border-radius: 1rem;
+    cursor: crosshair;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+    display: block;
+    touch-action: none;
+}
+/* Controls */
+.controls-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.control-card {
+    background: #FAF7F0;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.control-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #8B7355;
+    display: block;
+    text-align: center;
+}
+
+.color-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.color-preview {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background: #E91E63;  /* Change this */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.color-input {
+    width: 100%;
+    height: 3rem;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+}
+
+.hex-input {
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    border: 2px solid #D4C5B9;
+    text-align: center;
+    font-family: monospace;
+    font-size: 1rem;
+    background: white;
+}
+
+.slider {
+    width: 100%;
+    margin: 1rem 0;
+    accent-color: #8B7355;
+}
+
+.brush-size {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #8B7355;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-clear,
+.btn-add {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.btn-clear {
+    background: #E8DCC8;
+    color: #8B7355;
+}
+
+.btn-add {
+    background: #D4A574;
+    color: white;
+}
+
+.btn-clear:hover,
+.btn-add:hover {
+    transform: scale(1.05);
+}
+
+.btn-add:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Garden Grid */
+.garden-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.empty-garden {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 5rem 1rem;
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    color: #8B7355;
+    margin-bottom: 1rem;
+}
+
+.empty-subtitle {
+    font-size: 1.125rem;
+    color: #A0A096;
+}
+
+.flower-card {
+    background: #FAF7F0;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.flower-card:hover {
+    transform: scale(1.05);
+}
+
+.flower-img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+}
+
+.flower-date {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #A0A096;
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .garden-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Loading Animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spinning {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+[class^="flower-tooltip-"]:hover {
+    opacity: 1 !important;
+}

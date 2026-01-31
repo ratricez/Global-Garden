@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Flower Garden - Draw & Share</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <div class="header">
+            <button id="toggle-view-btn" class="btn-toggle">
+                <span id="toggle-icon">✨</span>
+                <span id="toggle-text">GO TO GARDEN</span>
+            </button>
+            <button class="btn-help">?</button>
+        </div>
+
+        <!-- Drawing Page -->
+        <div id="drawing-page" class="page">
+            <h1 class="title">🌸 Draw a Flower</h1>
+            
+            <div class="container">
+                <!-- Canvas Area -->
+                <div class="canvas-card">
+                    <canvas id="drawing-canvas" width="400" height="400"></canvas>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls-area">
+                    <!-- Color Picker -->
+                    <div class="control-card">
+                        <div class="color-header">
+                            <div id="color-preview" class="color-preview"></div>
+                            <span class="control-label">COLOR HEX CODE</span>
+                        </div>
+<input type="color" id="color-picker" value="#000000" class="color-input">
+<input type="text" id="color-hex" value="#000000" class="hex-input" maxlength="7">                    </div>
+
+                    <!-- Brush Thickness -->
+                    <div class="control-card">
+                        <p class="control-label">BRUSH THICKNESS</p>
+                        <input type="range" id="brush-slider" min="1" max="20" value="3" class="slider">
+                        <div id="brush-size" class="brush-size">3px</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button id="clear-btn" class="btn-clear">
+                            🗑️ CLEAR CANVAS
+                        </button>
+                        <button id="add-btn" class="btn-add">
+                            <span id="add-btn-text">🌸 ADD TO GARDEN</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Garden Page -->
+        <div id="garden-page" class="page hidden">
+            <h1 class="title">🌻 Community Garden</h1>
+            <p id="flower-count" class="subtitle">0 flowers planted by people around the world 🌍</p>
+            
+            <div id="garden-grid" class="garden-grid">
+                <div class="empty-garden">
+                    <p class="empty-title">The garden is empty! 🌱</p>
+                    <p class="empty-subtitle">Draw the first flower to start our community garden!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
